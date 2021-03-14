@@ -24,6 +24,6 @@ Teste desenvolvido com os requisitos descritos no [documento](https://docs.googl
  
   Tela Login | Tela TodoList |
  ------------|---------------|
- ![](https://github.com/cristovaolima/todolist/blob/main/screenshots/home.png?raw=true) | ![](https://github.com/cristovaolima/todolist/blob/main/screenshots/login.png?raw=true) |
+ ![](https://github.com/cristovaolima/todolist/blob/main/screenshots/login.png?raw=true) | ![](https://github.com/cristovaolima/todolist/blob/main/screenshots/home.png?raw=true)
   
 
