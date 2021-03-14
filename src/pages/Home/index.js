@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { Keyboard, Text } from 'react-native';
+import { Keyboard, Text, ScrollView } from 'react-native';
 import Atividades from '../../Componets/Atividades';
 import Realizadas from '../../Componets/Realizadas';
 import getRealm from '../../Conexao/realm';
@@ -11,9 +11,8 @@ export default function Home({route}) {
   const [editarIdTarefa, setEditarIdTarefa] = useState(null);
   const [editarStatus, setEditarStatus] = useState(null);
   const [tarefas, setTarefas] = useState([]);
-  const [tarefaFazer, setTarefaFazer] = useState([]);
-  const [tarefaFeitas, setTarefaFeitas] = useState([]);
 
+  //Carrega as tarefas assim que a home é aberta.
   useEffect(() => {
     carregarAtividades = async () => {
       const realm = await getRealm();
@@ -23,11 +22,13 @@ export default function Home({route}) {
     carregarAtividades();
   }, []);
 
+  //Função que atualiza os dados na lista.
   atualizarLista = async () => {
     const dadosUp = await realm.objects('Atividade').sorted('id', false);
     setTarefas(dadosUp);
   }
 
+  //Função que salva uma nova tarefa.
   salvarTarefa = async (data) => {
     const realm = await getRealm();
     const id = realm.objects('Atividade').sorted('id', true).length > 0
@@ -44,6 +45,8 @@ export default function Home({route}) {
     atualizarLista();
   }
 
+  //Função que verifica se o campo de nova tarefa está preechido, se sim, 
+  //chama a função de salva-lá no banco de dados.
   novaTarefa = async() => {
     if(tarefa === ''){
       alert('Preencha o campo da atividade!');
@@ -59,12 +62,14 @@ export default function Home({route}) {
     }    
   }
 
+  //Função que carrega o campo de tarefa para atualiza-lá.
   function editarAtividade(data){
     setTarefa(data.titulo);
     setEditarIdTarefa(data.id);
     setEditarStatus(data.status);
   }
 
+  //Função que alerar o satus da tarefa parea feita.
   ateraStatus = async (data) => {
     const realm = await getRealm();
     const edicaoAtividade = {
@@ -79,6 +84,7 @@ export default function Home({route}) {
     setTarefas(dadosAtualizados);
   }
 
+  //Função que faz a edição da tarefa no banco de dados.
   edicaoTarefa = async () => {
     const realm = await getRealm();
     const edicaoAtividade = {
@@ -95,6 +101,7 @@ export default function Home({route}) {
     Keyboard.dismiss();
   }
 
+  ////Função que exclui a tarefa no banco de dados.
   excluirAtividade = async (data) => {
     atualizarLista();
     const realm = await getRealm();
@@ -127,27 +134,29 @@ export default function Home({route}) {
       <ButtonText>{ editarIdTarefa === null ? '✓' : '✎'}</ButtonText>
     </Button>
     </AtividadeViw>
-      <Titulo>A Fazer</Titulo>    
-        {tarefas.length != 0 ? (
-          <ListFazer
+      <ScrollView>
+        <Titulo>A Fazer</Titulo>    
+          {tarefas.length != 0 ? (
+            <ListFazer
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersisTaps="handled"
+          data={tarefas}
+          keyExtractor={ item => String(item.id) }
+          renderItem={ ({ item }) => (<Atividades data={item} editar={editarAtividade} excluir={ excluirAtividade } status={ ateraStatus }/> )}
+          />
+          ) : (
+            <TextSemTarefa>Sem tarefas cadastradas!</TextSemTarefa>
+          )}
+
+        <Titulo>Realizadas</Titulo>
+        <ListRealizadas
           showsVerticalScrollIndicator={false}
           keyboardShouldPersisTaps="handled"
         data={tarefas}
-        keyExtractor={ item => String(item.id) }
-        renderItem={ ({ item }) => (<Atividades data={item} editar={editarAtividade} excluir={ excluirAtividade } status={ ateraStatus }/> )}
-        />
-        ) : (
-          <TextSemTarefa>Sem tarefas cadastradas!</TextSemTarefa>
-        )}
-
-      <Titulo>Realizadas</Titulo>
-      <ListRealizadas
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersisTaps="handled"
-      data={tarefas}
-        keyExtractor={ item => String(item.id) }
-        renderItem={ ({ item }) => (<Realizadas data={item} excluir={ excluirAtividade }/> )}
-        /> 
+          keyExtractor={ item => String(item.id) }
+          renderItem={ ({ item }) => (<Realizadas data={item} excluir={ excluirAtividade }/> )}
+          /> 
+      </ScrollView>
   </Container>   
   );
 } 
