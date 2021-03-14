@@ -1,6 +1,6 @@
 # Teste para desenvolvedor React Native Boomer 
 
-Teste desenvolvido com os requisitos descritos no [documeto](https://docs.google.com/document/d/1JKo7_1jjaVJdzsss3Elh0N2smz6Xe6Slbl_WU-Elekw/edit?usp=sharing). Para persistência e manipulação dos dados foi utilizado o banco de dados [Realm](https://github.com/realm/realm-js).
+Teste desenvolvido com os requisitos descritos no [documento](https://docs.google.com/document/d/1JKo7_1jjaVJdzsss3Elh0N2smz6Xe6Slbl_WU-Elekw/edit?usp=sharing). Para persistência e manipulação dos dados foi utilizado o banco de dados [Realm](https://github.com/realm/realm-js).
 
 **Bug:**
  * Mesmo o cadastro sendo feito e salvo no banco de dados, ao abrir o aplicativo novamente não vai para a tela home, não identifica que já foi feito o cadastro.
