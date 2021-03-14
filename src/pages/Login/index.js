@@ -12,6 +12,7 @@ export default function Login() {
 
   const nav = useNavigation();
 
+  //Carrega o usuario assim que o app é aberto.
   useEffect(() => {
     carregarUsuario = async () => {
       const realm = await getRealm();
@@ -22,6 +23,7 @@ export default function Login() {
     cadastrado();    
   }, []);  
 
+  //Função que salva o usuario no banco de dados.
   salvarUsuario = async (data) =>{
     const realm = await getRealm();
     const id = realm.objects('Usuario').sorted('id', true).length > 0
@@ -39,6 +41,7 @@ export default function Login() {
     });
   }
 
+  //Função que monta um usuario e chama a função para salva-ló.
   novoUsuario = async() => {
     try{
       const data = {nome: nome, email: email, senha: senha};
@@ -50,6 +53,7 @@ export default function Login() {
     }
   }
 
+  //Função que verifica se o castrado já foi feito, se sim, abre a Home.
   function cadastrado(){
     if(usuario.length === 0){
       Alert.alert('Sem usuario!', 'Cadastre-se.')
@@ -58,14 +62,14 @@ export default function Login() {
     }
   }
 
+  //Função que verifica se todos os campos foram preechidos, se sim, 
+  //a função de salvar o cadastro no banco é chamada. 
   function entrar(){
     if(nome === '' || email === '' || senha === ''){
       alert("Preencha todos os campos!")
     }else{
       novoUsuario();
-      // nav.navigate('Home');
     }
-
   }
 
  return (
